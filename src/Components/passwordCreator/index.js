@@ -25,10 +25,11 @@ class PasswordCreator extends Component {
     this.setState({username: e.target.value})
   }
 
-  onAddPassword = () => {
+  onAddPassword = e => {
+    e.preventDefault()
     const {username, website, password} = this.state
     const classname = colors[Math.ceil(Math.random() * 6)]
-    const Initial = website[0]
+    const Initial = website[0].toUpperCase()
     const newList = {
       userName: username,
       id: uuidv4(),
@@ -40,6 +41,9 @@ class PasswordCreator extends Component {
 
     this.setState(prevState => ({
       passwordList: [...prevState.passwordList, newList],
+      website: '',
+      username: '',
+      password: '',
     }))
   }
 
@@ -54,6 +58,14 @@ class PasswordCreator extends Component {
     const searchWord = e.target.value
     const searchResults = passwordList.map(each => each.includes(searchWord))
     this.setState({passwordList: searchResults})
+  }
+
+  showPassword = e => {
+    if (e.target.checked) {
+      this.setState({isShow: true})
+    } else {
+      this.setState({isShow: false})
+    }
   }
 
   render() {
@@ -173,11 +185,11 @@ class PasswordCreator extends Component {
             <ul className="result-container">
               {passwordList.map(eachValue => (
                 <li className="item-list" id={eachValue.id} key={eachValue.id}>
-                  <p className={`initial ${eachValue.classAdd}`}>
-                    {eachValue.initialValue}
+                  <p className={`initial ${eachValue.class}`}>
+                    {eachValue.initial}
                   </p>
                   <div className="list-content">
-                    <p className="website">{eachValue.websiteName}</p>
+                    <p className="website">{eachValue.Website}</p>
                     <p className="website">{eachValue.userName}</p>
                     {!isShow && (
                       <img
@@ -187,7 +199,7 @@ class PasswordCreator extends Component {
                       />
                     )}
 
-                    {isShow && <p>{eachValue.password}</p>}
+                    {isShow && <p className="website">{eachValue.Password}</p>}
                   </div>
 
                   <button
